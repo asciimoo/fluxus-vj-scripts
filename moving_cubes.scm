@@ -1,0 +1,31 @@
+(start-audio "Mixxx:out_0" 1024 44100)
+
+(define (draw-row count)
+  (cond
+    ((not (zero? count))
+     (translate (vector 2 (+ (/ count 4) 1) (/ (gh count) 5)))
+     ;(translate (vector 2 (+ (/ (gh count) 4) 10) (/ (gh count) 15)))
+     ;(scale (vector 1.2 1 (/ (+ 1 (gh count)) 20)))
+     ;(scale (vector 1 1 1.1))
+     (colour (vector (abs (sin (/ (time) 10))) 0 (/ 10 (+ 1 (gh count)))))
+     ;(rotate (vector (* (sin (time)) 5) 0 0))
+     ;(rotate (vector (gh count) 0 0))
+     (wire-colour (vector (abs (sin (/ (time) 10))) 0 (/ 10 (+ 1 (gh count)))))
+     ;(wire-colour (vector (/ (sin (time)) 10) (/ 10 (+ 1 (gh count))) 0))
+     (draw-cube)
+     (with-state
+       ;(scale (vector 1 (+ 1 (/ (gh count) 100)) (/ (gh count) 20)))
+       (rotate (vector (sin (gh count)) 25 0))
+       (draw-row (- count 1)))
+     (with-state
+       (rotate (vector 0 -25 0))
+       (draw-row (- count 1))))))
+
+(hint-wire)
+;(hint-none)
+;(hint-anti-alias)
+(opacity 0.3)
+(blur 0.5)
+;(ambient 0.5)
+;(shinyness 30)
+(every-frame (draw-row 10))
